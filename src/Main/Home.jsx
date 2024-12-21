@@ -5,7 +5,7 @@ import Button from "../components/ui/Button";
 import { ContainerScroll } from "../components/ui/ScrollTablet";
 import { BackgroundBeams } from "../components/ui/BackgroundBeams";
 import { Pricing } from "./Pricing";
-
+import Footer from "./Footer";
 function Home() {
   const people = [
     {
@@ -54,7 +54,7 @@ function Home() {
 
   return (
     <div>
-      <section className="min-h-screen w-full flex md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
+      <section className="md:min-h-screen w-full flex md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
         <Spotlight
           className="-top-40 left-0 md:left-60 md:-top-20"
           fill="white"
@@ -75,8 +75,14 @@ function Home() {
           <div className="flex flex-row items-center justify-center mt-3 w-full">
             <AnimatedTooltip items={people} />
           </div>
-          <div className="flex items-center justify-center mt-5">
-            <Button>Let's see</Button>
+          <div className="flex items-center justify-center mt-5 gap-3">
+            <Button>Read blogs</Button>
+            <a
+              href="https://github.com/OINDIL"
+              className="text-neutral-50 hover:underline font-semibold"
+            >
+              Visit our Github
+            </a>
           </div>
         </div>
       </section>
@@ -110,28 +116,30 @@ function Home() {
       </section>
 
       <section>
-        <div className="h-[40rem] w-full rounded-md bg-neutral-950 relative flex flex-col items-center justify-center antialiased">
+        <div className="h-[40rem] w-full bg-neutral-950 relative flex flex-col items-center justify-center antialiased">
           <div className="max-w-2xl mx-auto p-4">
             <h1 className="relative z-10 text-lg md:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
               Join the waitlist
             </h1>
             <p></p>
             <p className="text-neutral-500 max-w-lg mx-auto my-2 text-sm text-center relative z-10">
-              Welcome to MailJet, the best transactional email service on the
-              web. We provide reliable, scalable, and customizable email
-              solutions for your business. Whether you&apos;re sending order
-              confirmations, password reset emails, or promotional campaigns,
-              MailJet has got you covered.
+              We are trying our best to provide you with the best experience as
+              soon as possible. Enter your email to be part of the waitlist. We
+              will notify you when we launch.
             </p>
             <input
               type="text"
-              placeholder="Enter your email"
+              placeholder="Enter your email and hit Enter"
               className="rounded-lg border border-neutral-800 focus:ring-2 focus:ring-teal-500  w-full relative z-10 mt-4  bg-neutral-950 placeholder:text-neutral-700 px-3 py-1 focus:outline-none text-white"
             />
           </div>
           <BackgroundBeams />
         </div>
       </section>
+
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
