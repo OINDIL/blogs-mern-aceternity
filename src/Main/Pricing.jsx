@@ -3,7 +3,7 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CanvasRevealEffect } from "../components/ui/CanvasRevealCard";
 
-export function Pricing() {
+export default function Pricing() {
   return (
     <>
       <div className="bg-black pt-10">
