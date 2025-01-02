@@ -1,9 +1,9 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Landing/Home";
-import About from "./Landing/About";
-import Contact from "./Landing/Contact";
-import Blog from "./Landing/Blog";
+import About from "./Main/About";
+import Contact from "./Main/Contact";
+import Blog from "./Main/Blog";
 import { Navbar } from "./Landing/Navbar";
 
 function App() {

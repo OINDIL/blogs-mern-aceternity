@@ -66,13 +66,13 @@ function Home() {
     <div>
       <div className="relative">
         <nav className="backdrop-blur-md backdrop-saturate-200 absolute top-[50px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-4 rounded-full z-[9999]">
-          <div className="p-4 max-w-7xl  mx-auto relative z-10 w-full flex items-center justify-between">
+          <div className="p-4 max-w-7xl  mx-auto relative z-10 w-full md:flex items-center justify-between hidden">
             <ul className="flex items-center gap-8">
               {nav.map((item) => (
                 <li key={item.name}>
                   <Link
                     to={item.href}
-                    className="text-base text-neutral-300 antialiased hover:text-white"
+                    className="text-base text-neutral-300 antialiased hover:text-white transition-colors ease-linear duration-75"
                   >
                     {item.name}
                   </Link>
