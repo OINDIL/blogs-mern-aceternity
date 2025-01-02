@@ -84,7 +84,7 @@ function Home() {
                   <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
                 </button>
               </li>
-              hi this is a change
+              hi this is a change fjsadj
             </ul>
           </div>
         </nav>
