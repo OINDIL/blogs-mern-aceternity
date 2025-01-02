@@ -21,7 +21,9 @@ function Footer() {
               key={item}
               className="text-center text-neutral-50 text-2xl font-semibold"
             >
-              <Link to={`/${item.toLowerCase()}`}>{item}</Link>
+              <Link to={`/${item.toLowerCase()}`} className="hover:underline">
+                {item}
+              </Link>
             </li>
           ))}
         </ul>

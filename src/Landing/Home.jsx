@@ -4,8 +4,10 @@ import { AnimatedTooltip } from "../components/ui/AnimatedToolTip";
 import Button from "../components/ui/Button";
 import { ContainerScroll } from "../components/ui/ScrollTablet";
 import { BackgroundBeams } from "../components/ui/BackgroundBeams";
-import { Pricing } from "./Pricing";
+import Pricing from "./Pricing";
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
+
 function Home() {
   const people = [
     {
@@ -52,13 +54,46 @@ function Home() {
     },
   ];
 
+  const nav = [
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Contact", href: "/contact" },
+    { name: "Blog", href: "/blog" },
+  ];
+
   return (
     <div>
+      <div className="relative">
+        <nav className="backdrop-blur-md backdrop-saturate-200 absolute top-[50px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-4 rounded-full z-[9999]">
+          <div className="p-4 max-w-7xl  mx-auto relative z-10 w-full flex items-center justify-between">
+            <ul className="flex items-center gap-8">
+              {nav.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.href}
+                    className="text-base text-neutral-300 antialiased hover:text-white"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
+                  <Link to="/login">Login</Link>
+                  <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
       <section className="md:min-h-screen w-full flex md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
         <Spotlight
           className="-top-40 left-0 md:left-60 md:-top-20"
           fill="white"
         />
+
         <div className="p-4 max-w-7xl  mx-auto relative z-10  w-full pt-20 md:pt-0">
           <h1 className="text-4xl md:text-7xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 pb-1">
             Your very own <br /> blog application
