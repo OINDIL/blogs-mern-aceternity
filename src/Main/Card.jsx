@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 function Card({ user }) {
   return (
@@ -12,6 +13,7 @@ function Card({ user }) {
         <h2 className="text-lg font-semibold text-gray-900">{user.name}</h2>
         <p className="text-sm text-gray-600">{user.designation}</p>
       </div>
+      <Button name={user.name} />
     </div>
   );
 }
