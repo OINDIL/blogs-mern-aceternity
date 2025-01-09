@@ -5,6 +5,9 @@ import About from "./Main/About";
 import Contact from "./Main/Contact";
 import Blog from "./Main/Blog";
 import { Navbar } from "./Landing/Navbar";
+import DataFlowProvider from "./Context/DataFlow";
+
+import Dashboard from "./Main/Dashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,7 +25,16 @@ function App() {
       path: "/about",
       element: (
         <>
-          <About />
+          <About>
+            <h1>Hi this is about</h1>
+
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
+              fugiat repellendus doloribus ullam atque, quasi nulla error eius
+              delectus quos. Pariatur excepturi quisquam facere labore magnam
+              minus nihil cum recusandae.
+            </p>
+          </About>
         </>
       ),
     },
@@ -42,10 +54,16 @@ function App() {
         </>
       ),
     },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
   ]);
   return (
     <div>
-      <RouterProvider router={router} />
+      <DataFlowProvider>
+        <RouterProvider router={router} />
+      </DataFlowProvider>
     </div>
   );
 }
