@@ -8,7 +8,6 @@ import { Navbar } from "./Landing/Navbar";
 import DataFlowProvider from "./Context/DataFlow";
 
 import Dashboard from "./Main/Dashboard";
-import PrivateRoute from "./private-routes/PrivateRoute";
 import Login from "./components/auth/Login";
 
 function App() {
@@ -56,12 +55,16 @@ function App() {
       ),
     },
     {
+      path: "/register",
+      element: <>Register</>,
+    },
+    {
+      path: "/forgot-password",
+      element: <>Reset your password</>,
+    },
+    {
       path: "/dashboard",
-      element: (
-        <PrivateRoute>
-          <Dashboard />
-        </PrivateRoute>
-      ),
+      element: <Dashboard />,
     },
   ]);
   return (
