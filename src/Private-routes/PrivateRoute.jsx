@@ -21,12 +21,12 @@ const ProtectedRoute = ({ children }) => {
           navigate("/login");
         }
 
-        setIsAuthenticated(true); // Authenticated
+        setIsAuthenticated(true);
+        setLoading(false); // Authenticated
       } catch (error) {
         setIsAuthenticated(false); // Not authenticated
         navigate("/login"); // Redirect to login if not authenticated
-      } finally {
-        setLoading(false); // Stop loading once check is done
+        setLoading(false);
       }
     };
 
@@ -37,7 +37,7 @@ const ProtectedRoute = ({ children }) => {
     return <p>Loading...</p>; // You can display a loader or spinner here
   }
 
-  return isAuthenticated ? children : null;
+  return isAuthenticated ? children : navigate("/login");
 };
 
 export default ProtectedRoute;

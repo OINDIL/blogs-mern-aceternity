@@ -15,7 +15,7 @@ app.use(cors({
 app.use(cookieParser());
 
 const users = [
-    { email: 'testuser@example.com', password: bcrypt.hashSync('password123', 10) }
+    { email: 'admin@admin.com', password: bcrypt.hashSync('admin', 10) }
 ]; // Temporary in-memory user store with a static user
 
 
@@ -47,7 +47,12 @@ app.post('/login', async (req, res) => {
 
     // res.json({ message: 'Login successful', token });
 
-    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'Strict' });
+    res.cookie("token", token, {
+        httpOnly: true, // Prevents access by JavaScript
+        secure: process.env.NODE_ENV === "production", // Ensures HTTPS in production
+        sameSite: "Strict", // Helps prevent CSRF
+        maxAge: 3600000, // 1 hour
+    });
 
     res.status(200).json({ message: 'Login successful' });
 });
