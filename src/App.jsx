@@ -10,6 +10,7 @@ import DataFlowProvider from "./Context/DataFlow";
 import Dashboard from "./Main/Dashboard";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./Private-routes/PrivateRoute";
+import Register from "./components/auth/Register";
 
 function App() {
   const router = createBrowserRouter([
@@ -57,7 +58,11 @@ function App() {
     },
     {
       path: "/register",
-      element: <>Register</>,
+      element: (
+        <>
+          <Register />
+        </>
+      ),
     },
     {
       path: "/forgot-password",
@@ -65,6 +70,16 @@ function App() {
     },
     {
       path: "/dashboard",
+      element: (
+        <>
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        </>
+      ),
+    },
+    {
+      path: "/admin",
       element: (
         <>
           <PrivateRoute>
