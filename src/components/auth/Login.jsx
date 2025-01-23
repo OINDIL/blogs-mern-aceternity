@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const [errorState, setErrorState] = useState(false);
+  const [toastError, setToastError] = useState(false);
+
+  const navigation = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await fetch("http://localhost:3000/login", {
         method: "POST",
@@ -16,20 +18,23 @@ export default function Login() {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        navigate("/dashboard");
+      if (res.ok === true) {
+        navigation("/dashboard");
+      } else {
+        setToastError(true);
+        throw new Error("Invalid credentials");
       }
-      console.log(data);
+
+      // if (!res.ok) {
+      //   throw new Error("Invalid credentials");
+      // }
+
+      // navigation("/dashboard");
     } catch (error) {
-      console.log(error);
-      setErrorState(true);
+      console.log(error.message);
     }
   };
 
@@ -49,6 +54,13 @@ export default function Login() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {toastError === true ? (
+              <div className="border rounded-lg border-red-500 px-4 py-1 bg-red-200">
+                <p className="text-red-600">Invalid credentials</p>
+              </div>
+            ) : (
+              ""
+            )}
             <div>
               <label
                 htmlFor="email"

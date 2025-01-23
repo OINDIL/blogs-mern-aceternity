@@ -1,49 +1,44 @@
-require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const User = require('../models/User');
+const router = express.Router();
 const jwt = require('jsonwebtoken');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-
-const app = express();
-app.use(express.json());
-
-app.use(cors({
-    origin: "http://localhost:5173", // Replace with the URL of your frontend
-    credentials: true,
-}));
-app.use(cookieParser());
-
-const users = [
-    { email: 'admin@admin.com', password: bcrypt.hashSync('admin', 10) }
-]; // Temporary in-memory user store with a static user
 
 
-// Signup route
-app.post('/signup', async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
+
+router.post('/register', async (req, res) => {
+    const { email, password, name } = req.body;
+    if (!email || !password || !name) {
+        return res.status(400).json({ message: 'Credentials are required' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    users.push({ email, password: hashedPassword });
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const newUser = await User.create({ email, password, name });
+    console.log(newUser)
+
+
     res.status(201).json({ message: 'User registered successfully' });
 });
 
 // Login route
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    console.log(email, password)
-    const user = users.find(u => u.email === email);
 
+    console.log({ email, password });
 
+    const user = await User.findOne({ email });
+    console.log(user)
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !passwordMatch) {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ email: user.email }, 'oindil', { expiresIn: '1h' });
+    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     // res.json({ message: 'Login successful', token });
 
@@ -57,7 +52,8 @@ app.post('/login', async (req, res) => {
     res.status(200).json({ message: 'Login successful' });
 });
 
-app.get('/check', (req, res) => {
+// checking for token in the frontend
+router.get('/check', (req, res) => {
     try {
         const token = req.cookies.token;
         if (!token) {
@@ -75,4 +71,4 @@ app.get('/check', (req, res) => {
 
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+module.exports = router;
