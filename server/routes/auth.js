@@ -60,7 +60,7 @@ router.get('/check', (req, res) => {
             return res.status(401).json({ message: 'No token' });
         }
 
-        jwt.verify(token, 'oindil', (err, user) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
             if (err) return res.status(403).json({ message: 'Token is invalid or expired' });
 
             res.status(200).json({ status: "Authenticated user" });

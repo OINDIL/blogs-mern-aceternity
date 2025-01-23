@@ -6,30 +6,28 @@ const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Check authentication state from the backend
-        const res = await fetch("http://localhost:3000/check", {
-          method: "GET",
-          credentials: "include",
-        });
-        const data = await res.json();
-        console.log(data);
+  const checkAuth = async () => {
+    try {
+      // Check authentication state from the backend
+      const res = await fetch("http://localhost:3000/auth/check", {
+        method: "GET",
+        credentials: "include",
+      });
 
-        if (!res.ok) {
-          navigate("/login");
-        }
-
-        setIsAuthenticated(true);
-        setLoading(false); // Authenticated
-      } catch (error) {
-        setIsAuthenticated(false); // Not authenticated
-        navigate("/login"); // Redirect to login if not authenticated
-        setLoading(false);
+      if (!res.ok) {
+        navigate("/login");
       }
-    };
 
+      setIsAuthenticated(true);
+      setLoading(false); // Authenticated
+    } catch (error) {
+      setIsAuthenticated(false); // Not authenticated
+      navigate("/login"); // Redirect to login if not authenticated
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     checkAuth();
   }, [navigate]);
 

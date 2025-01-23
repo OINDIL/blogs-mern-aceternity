@@ -12,7 +12,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3000/login", {
+      const res = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,12 +27,6 @@ export default function Login() {
         setToastError(true);
         throw new Error("Invalid credentials");
       }
-
-      // if (!res.ok) {
-      //   throw new Error("Invalid credentials");
-      // }
-
-      // navigation("/dashboard");
     } catch (error) {
       console.log(error.message);
     }
