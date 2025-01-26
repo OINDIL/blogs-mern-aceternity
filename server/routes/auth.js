@@ -6,20 +6,24 @@ const jwt = require('jsonwebtoken');
 
 router.post('/register', async (req, res) => {
     const { email, password, name, role = 'user' } = req.body;
-    console.log({ email, password, name, role });
+    // console.log({ email, password, name, role });
     if (!email || !password || !name) {
         return res.status(400).json({ message: 'Credentials are required' });
     }
 
-    // const existingUserWithEmail = await User.findOne({ email });
-    // if (existingUserWithEmail) {
-    //     return res.status(400).json({ message: 'User already exists' });
-    // }
+    const existingUserWithEmail = await User.findOne({ email });
 
-    // const existingUserWithAdminRole = await User.findOne({ role: 'admin' });
-    // if (existingUserWithAdminRole) {
-    //     return res.status(400).json({ message: 'Admin user already exists' });
-    // }
+    if (existingUserWithEmail) {
+        console.log('User already exists');
+        return res.status(400).json({ message: 'User already exists' });
+    }
+
+    if (role === 'admin') {
+        const existingUserWithAdminRole = await User.findOne({ role });
+        if (existingUserWithAdminRole) {
+            return res.status(400).json({ message: 'Admin user already exists' });
+        }
+    }
 
 
     const newUser = await User.create({ email, password, name, role });

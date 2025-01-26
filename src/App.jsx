@@ -41,7 +41,7 @@ function App() {
       ),
     },
     {
-      path: "/blog",
+      path: "/blogs",
       element: (
         <>
           <Blog />

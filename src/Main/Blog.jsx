@@ -4,9 +4,7 @@ import { useDataFlowContext } from "../Context/DataFlow";
 function Blog() {
   const { darkMode, setDarkMode } = useDataFlowContext();
 
-  console.log(darkMode);
-
-  return <div>Blog</div>;
+  return <div></div>;
 }
 
 export default Blog;

@@ -22,7 +22,7 @@ export default function Login() {
       });
 
       if (res.ok === true) {
-        navigation("/dashboard");
+        navigation("/blogs");
       } else {
         setToastError(true);
         throw new Error("Invalid credentials");
@@ -60,7 +60,7 @@ export default function Login() {
                 htmlFor="email"
                 className="block text-sm/6 font-medium text-gray-900"
               >
-                Oindil Golder
+                Email
               </label>
               <div className="mt-2">
                 <input
@@ -69,6 +69,7 @@ export default function Login() {
                   type="email"
                   required
                   autoComplete="email"
+                  placeholder="Johndoe@example.com"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -99,6 +100,7 @@ export default function Login() {
                   type="password"
                   required
                   autoComplete="current-password"
+                  placeholder="Enter your own password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   onChange={(e) => setPassword(e.target.value)}
                 />

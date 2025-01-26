@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FaEyeSlash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -7,6 +9,7 @@ export default function Register() {
   const [userName, setUserName] = useState("");
   const [toastError, setToastError] = useState(false);
   const [successRegister, setSuccessRegister] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   //   const navigation = useNavigate();
 
@@ -51,7 +54,7 @@ export default function Register() {
           <form className="space-y-6" onSubmit={handleSubmit}>
             {toastError === true ? (
               <div className="border rounded-lg border-red-500 px-4 py-1 bg-red-200">
-                <p className="text-red-600">Invalid credentials</p>
+                <p className="text-red-600">Can't register right now</p>
               </div>
             ) : (
               ""
@@ -76,11 +79,12 @@ export default function Register() {
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
+                  id="name"
+                  name="name"
                   type="text"
                   required
                   autoComplete="email"
+                  placeholder="John Doe"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   onChange={(e) => setUserName(e.target.value)}
                 />
@@ -101,6 +105,7 @@ export default function Register() {
                   type="email"
                   required
                   autoComplete="email"
+                  placeholder="johndoe@example.com"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -116,16 +121,28 @@ export default function Register() {
                   Password
                 </label>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
+                  placeholder="Minimum 6 characters"
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                {showPassword ? (
+                  <FaEye
+                    className="absolute top-[9px] right-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                ) : (
+                  <FaEyeSlash
+                    className="absolute top-[9px] right-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                )}
               </div>
             </div>
 
@@ -137,6 +154,15 @@ export default function Register() {
                 Register
               </button>
             </div>
+            <p className="mt-10 text-center text-sm/6 text-gray-500">
+              Already a member?{" "}
+              <Link
+                to="/login"
+                className="font-semibold text-indigo-600 hover:text-indigo-500"
+              >
+                Login
+              </Link>
+            </p>
           </form>
         </div>
       </div>
