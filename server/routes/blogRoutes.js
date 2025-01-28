@@ -9,15 +9,10 @@ const User = require('../models/User');
 router.post('/create', verifyToken, async (req, res) => {
     try {
         const { title, content } = req.body;
-
         if (!title || !content) {
             return res.status(400).json({ message: 'Title and content are required' });
         }
-
         const { token } = req.cookies
-
-
-
         if (!token) {
             return res.status(401).json({ message: 'No token' });
         }
@@ -48,6 +43,38 @@ router.post('/create', verifyToken, async (req, res) => {
         res.status(500).json({ message: "Could not create blog" });
     }
 
+});
+
+router.get('/all-blogs', verifyToken, async (req, res) => {
+    try {
+        const { token } = req.cookies
+        if (!token) {
+            return res.status(401).json({ message: 'No token' });
+        }
+
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) return res.status(403).json({ message: 'Token is invalid or expired' });
+        });
+
+        const UserIdFromToken = jwt.decode(token).id;
+
+        const BlogUser = await User.findById({ _id: UserIdFromToken })
+
+        const BlogUserBlogs = await BlogUser.populate('blogs')
+
+
+        if (!BlogUser || !BlogUserBlogs) {
+            return res.status(404).json([{ author: "User not found", title: "Not found", content: "Not found" }]);
+        }
+        const blogResponse = {
+            author: BlogUser.name,
+            blogs: BlogUserBlogs.blogs
+        }
+        res.json(blogResponse);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Server error" });
+    }
 });
 
 module.exports = router;
