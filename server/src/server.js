@@ -2,9 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const authRoutes = require('../routes/auth');
+const authRoutes = require('../routes/authRouter');
 const { default: mongoose } = require('mongoose');
 const userRoute = require('../routes/userRoute');
+const blogsRoute = require('../routes/blogRoutes')
 
 const app = express();
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoute)
+app.use('/blogs', blogsRoute)
 
 
 

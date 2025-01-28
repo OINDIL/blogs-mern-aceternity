@@ -35,30 +35,35 @@ router.post('/register', async (req, res) => {
 
 // Login route
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
 
-    // console.log({ email, password });
+    try {
+        const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
-    console.log(user)
-    const passwordMatch = await bcrypt.compare(password, user.password);
 
-    if (!user || !passwordMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+            maxAge: 3600000,
+        });
+
+        res.status(200).json({ message: 'Login successful' });
+    } catch (error) {
+        res.status(500).json({ message: 'Could not login' });
     }
-
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    // res.json({ message: 'Login successful', token });
-
-    res.cookie("token", token, {
-        httpOnly: true, // Prevents access by JavaScript
-        secure: process.env.NODE_ENV === "production", // Ensures HTTPS in production
-        sameSite: "Strict", // Helps prevent CSRF
-        maxAge: 3600000, // 1 hour
-    });
-
-    res.status(200).json({ message: 'Login successful', token });
 });
 
 // checking for token in the frontend

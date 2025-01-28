@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please add a password'],
         minlength: 6,
     },
+    blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }],
     role: {
         type: String,
         enum: ['user', 'admin'],
