@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Blog = require('../models/Blogs');
 const User = require('../models/User');
+const { m } = require('framer-motion');
 // Work in progress
 
 router.post('/create', verifyToken, async (req, res) => {
@@ -45,7 +46,7 @@ router.post('/create', verifyToken, async (req, res) => {
 
 });
 
-router.get('/all-blogs', verifyToken, async (req, res) => {
+router.get('/all-user-blogs', verifyToken, async (req, res) => {
     try {
         const { token } = req.cookies
         if (!token) {
@@ -76,5 +77,32 @@ router.get('/all-blogs', verifyToken, async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+router.get('/all-blogs', async (req, res) => {
+    const allBlogs = await Blog.find();
+
+    if (!allBlogs) {
+        return res.status(404).json([{ author: "No author found", title: "Not found", content: "Not found" }]);
+    }
+    res.json(allBlogs);
+})
+
+router.get('/featured-blogs', async (req, res) => {
+    res.json([{ author: "No author found", title: "Not found", content: "Not found" }])
+})
+
+router.get('/specific-blog/:id', async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        res.status(404).json({ message: "Blog not found" });
+    }
+
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+    }
+    res.json(blog);
+})
 
 module.exports = router;

@@ -36,7 +36,7 @@ function Blog() {
   const [openModal, setOpenModal] = useState(false);
   const getUserBlogs = async () => {
     try {
-      const res = await fetch("http://localhost:3000/blogs/all-blogs", {
+      const res = await fetch("http://localhost:3000/blogs/all-user-blogs", {
         method: "GET",
         credentials: "include",
       });
