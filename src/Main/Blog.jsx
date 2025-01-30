@@ -28,6 +28,8 @@ function Blog() {
         title: "No title",
         content: "No content",
         createdAt: new Date(),
+        slug: "",
+        _id: undefined,
       },
     ],
   });
@@ -51,6 +53,8 @@ function Blog() {
               title: blog.title,
               content: blog.content,
               createdAt: blog.createdAt,
+              slug: blog.slug,
+              _id: blog._id,
             };
           }),
         });
@@ -123,6 +127,12 @@ function Blog() {
               >
                 <h3 className="text-xl font-medium">{blogs.title}</h3>
                 <p className="text-gray-600">{blogs.content}</p>
+                <Link
+                  to={`/specific-blog/${blogs.slug}`}
+                  className="underline text-sm"
+                >
+                  Read more
+                </Link>
               </div>
             ))}
           </main>
@@ -140,6 +150,12 @@ function Blog() {
               >
                 <h3 className="text-xl font-medium">{blogs.title}</h3>
                 <p className="text-gray-600">{blogs.content}</p>
+                <Link
+                  to={`/specific-blog/${blogs.slug}`}
+                  className="underline text-sm"
+                >
+                  Read more
+                </Link>
               </div>
             ))}
           </main>

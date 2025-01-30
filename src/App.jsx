@@ -5,12 +5,13 @@ import About from "./Main/About";
 import Contact from "./Main/Contact";
 import Blog from "./Main/Blog";
 import { Navbar } from "./Landing/Navbar";
-import DataFlowProvider from "./Context/DataFlow";
 
 import Dashboard from "./Main/Dashboard";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./Private-routes/PrivateRoute";
 import Register from "./components/auth/Register";
+import SpecificBlogs from "./Main/blog-page-components/SpecificBlogs";
+import Error from "./Main/Error";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,7 +23,7 @@ function App() {
           <Home />
         </>
       ),
-      errorElement: <div>404</div>,
+      errorElement: <Error />,
     },
     {
       path: "/about",
@@ -44,7 +45,19 @@ function App() {
       path: "/blogs",
       element: (
         <>
-          <Blog />
+          <PrivateRoute>
+            <Blog />
+          </PrivateRoute>
+        </>
+      ),
+    },
+    {
+      path: "/specific-blog/:slug",
+      element: (
+        <>
+          <PrivateRoute>
+            <SpecificBlogs />
+          </PrivateRoute>
         </>
       ),
     },
@@ -91,9 +104,7 @@ function App() {
   ]);
   return (
     <div>
-      <DataFlowProvider>
-        <RouterProvider router={router} />
-      </DataFlowProvider>
+      <RouterProvider router={router} />
     </div>
   );
 }

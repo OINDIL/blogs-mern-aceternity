@@ -4,14 +4,20 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Blog = require('../models/Blogs');
 const User = require('../models/User');
-const { m } = require('framer-motion');
 // Work in progress
 
 router.post('/create', verifyToken, async (req, res) => {
     try {
-        const { title, content } = req.body;
+        const { title, content, category = 'General' } = req.body;
         if (!title || !content) {
             return res.status(400).json({ message: 'Title and content are required' });
+        }
+
+        const createSlug = (title) => {
+            return title
+                .toLowerCase()
+                .replace(/[^\w ]+/g, '')
+                .replace(/ +/g, '-');
         }
         const { token } = req.cookies
         if (!token) {
@@ -27,6 +33,8 @@ router.post('/create', verifyToken, async (req, res) => {
         const newBlog = {
             title,
             content,
+            category,
+            slug: createSlug(title),
             user: UserIdFromToken
         };
 
@@ -91,18 +99,35 @@ router.get('/featured-blogs', async (req, res) => {
     res.json([{ author: "No author found", title: "Not found", content: "Not found" }])
 })
 
-router.get('/specific-blog/:id', async (req, res) => {
-    const { id } = req.params;
-    if (!id) {
+router.get('/specific-blog/:slug', async (req, res) => {
+    const { slug } = req.params;
+    if (!slug) {
         res.status(404).json({ message: "Blog not found" });
     }
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findOne({ slug });
+
 
     if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
     }
-    res.json(blog);
+
+    const blogAuthor = await blog.populate('user')
+
+    if (!blogAuthor) {
+        return res.status(404).json({ message: "Blog author not found" });
+    }
+
+    const responseBody = {
+        author: blogAuthor?.user?.name,
+        blog: {
+            title: blog.title,
+            content: blog.content,
+            createdAt: blog.createdAt
+        }
+    }
+
+    res.json(responseBody);
 })
 
 module.exports = router;

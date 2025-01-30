@@ -15,6 +15,31 @@ export default function BlogsModal({
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("General");
+
+  const categoryList = [
+    {
+      name: "General",
+    },
+    {
+      name: "Tech",
+    },
+    {
+      name: "Business",
+    },
+    {
+      name: "Travel",
+    },
+    {
+      name: "Food",
+    },
+    {
+      name: "Entertainment",
+    },
+    {
+      name: "Sports",
+    },
+  ];
 
   const handleBlogSubmit = async () => {
     try {
@@ -25,6 +50,7 @@ export default function BlogsModal({
       const body = {
         title,
         content,
+        category,
       };
 
       const res = await fetch("http://localhost:3000/blogs/create", {
@@ -57,6 +83,7 @@ export default function BlogsModal({
       });
     }
   };
+
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -103,6 +130,25 @@ export default function BlogsModal({
                   placeholder="Mein toh raste se ja rha tha"
                   onChange={(e) => setTitle(e.target.value)}
                 />
+              </div>
+
+              <div className="flex flex-col gap-2 mt-3">
+                <label className="font-semibold text-gray-900 dark:text-white">
+                  Category
+                </label>
+                <select
+                  name="category"
+                  id="category"
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+                  rounded-lg bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  {categoryList.map((category, index) => (
+                    <option key={index} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="flex flex-col gap-2 mt-3">

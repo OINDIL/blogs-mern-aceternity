@@ -10,6 +10,14 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        default: 'General'
+    },
+    slug: {
+        type: String,
+        unique: true
+    },
 
     user: {
         type: mongoose.Schema.Types.ObjectId,
