@@ -5,7 +5,6 @@ import About from "./Main/About";
 import Contact from "./Main/Contact";
 import Blog from "./Main/Blog";
 import { Navbar } from "./Landing/Navbar";
-
 import Dashboard from "./Main/Dashboard";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./Private-routes/PrivateRoute";
@@ -82,17 +81,7 @@ function App() {
       element: <>Reset your password</>,
     },
     {
-      path: "/dashboard",
-      element: (
-        <>
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        </>
-      ),
-    },
-    {
-      path: "/admin",
+      path: "/admin-dashboard",
       element: (
         <>
           <PrivateRoute>

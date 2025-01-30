@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogsModal from "./blog-page-components/BlogsModal";
+import IndividualBlogComponent from "./blog-page-components/IndividualBlogComponent";
 const navItems = [
   {
     name: "Home",
@@ -137,25 +138,23 @@ function Blog() {
             ))}
           </main>
         </div>
+
         <div>
           <h2 className="text-3xl font-semibold">All Blogs 📝</h2>
           <p className="text-gray-600">Read some premium quality blogs</p>
           <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-            {blogs.allBlogs.map((blogs, index) => (
+            {blogs.allBlogs.map((blog, index) => (
               <div
                 key={index}
-                className={`border rounded p-2 ${
-                  index === 0 && `col-span-1 md:col-span-2`
-                }`}
+                className={`${index === 0 && `col-span-1 md:col-span-2`}`}
               >
-                <h3 className="text-xl font-medium">{blogs.title}</h3>
-                <p className="text-gray-600">{blogs.content}</p>
-                <Link
-                  to={`/specific-blog/${blogs.slug}`}
-                  className="underline text-sm"
-                >
-                  Read more
-                </Link>
+                <IndividualBlogComponent
+                  title={blog.title}
+                  content={blog.content}
+                  slug={blog.slug}
+                  author={blogs.author}
+                  createdAt={new Date(blog.createdAt).toDateString()}
+                />
               </div>
             ))}
           </main>
