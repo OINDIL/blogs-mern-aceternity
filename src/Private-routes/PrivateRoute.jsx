@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
       });
 
       if (!res.ok) {
-        navigate("/login");
+        return navigate("/login");
       }
 
       setIsAuthenticated(true);
@@ -32,7 +32,7 @@ const ProtectedRoute = ({ children }) => {
   }, [navigate]);
 
   if (loading) {
-    return <p>Loading...</p>; // You can display a loader or spinner here
+    return <p className="text-3xl font-bold text-red-600">Loading...</p>; // You can display a loader or spinner here
   }
 
   return isAuthenticated ? children : navigate("/login");

@@ -13,8 +13,8 @@ function IndividualBlogComponent({ title, content, slug, author, createdAt }) {
         <span className="text-gray-600 text-sm flex items-center gap-1">
           <img
             src="https://placehold.co/30x30"
-            className="rounded-full inline"
-            alt=""
+            className="rounded-full inline w-[30px] h-[30px]"
+            alt="author-profile"
           />{" "}
           {author} | {createdAt}
         </span>
