@@ -22,7 +22,7 @@ const navItems = [
 ];
 
 function Blog() {
-  const [blogs, setBlogs] = useState({
+  const [userBlogs, setUserBlogs] = useState({
     author: "No author found",
     allBlogs: [
       {
@@ -34,6 +34,16 @@ function Blog() {
       },
     ],
   });
+  const [allblogs, setAllBlogs] = useState([
+    {
+      author: "No author found",
+      title: "No title",
+      content: "No content",
+      createdAt: new Date(),
+      slug: "",
+      _id: undefined,
+    },
+  ]);
 
   const [refreshPage, setRefreshPage] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -47,7 +57,7 @@ function Blog() {
       const data = await res.json();
 
       if (data) {
-        setBlogs({
+        setUserBlogs({
           author: data.author,
           allBlogs: data.blogs.map((blog) => {
             return {
@@ -65,12 +75,41 @@ function Blog() {
     }
   };
 
+  const getAllBlogs = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/blogs/all-blogs", {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (data) {
+        setAllBlogs(
+          data.map((blog) => {
+            return {
+              author: blog.author,
+              title: blog.title,
+              content: blog.content,
+              createdAt: blog.createdAt,
+              slug: blog.slug,
+              _id: blog._id,
+            };
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   useEffect(() => {
     getUserBlogs();
+    getAllBlogs();
   }, []);
 
   useEffect(() => {
     getUserBlogs();
+    getAllBlogs();
   }, [refreshPage]);
 
   return (
@@ -114,36 +153,10 @@ function Blog() {
 
       <section className="max-w-6xl mx-auto px-12 mt-4 space-y-4">
         <div>
-          <h2 className="text-3xl font-semibold">Featured Blogs 📝</h2>
-          <p className="text-gray-600">
-            Some featured blogs from all the users
-          </p>
-          <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-            {blogs.allBlogs.map((blogs, index) => (
-              <div
-                key={index}
-                className={`border rounded p-2 ${
-                  index === 0 && `col-span-1 md:col-span-2`
-                }`}
-              >
-                <h3 className="text-xl font-medium">{blogs.title}</h3>
-                <p className="text-gray-600">{blogs.content}</p>
-                <Link
-                  to={`/specific-blog/${blogs.slug}`}
-                  className="underline text-sm"
-                >
-                  Read more
-                </Link>
-              </div>
-            ))}
-          </main>
-        </div>
-
-        <div>
           <h2 className="text-3xl font-semibold">All Blogs 📝</h2>
-          <p className="text-gray-600">Read some premium quality blogs</p>
+          <p className="text-gray-600">See all the blogs of other users</p>
           <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-            {blogs.allBlogs.map((blog, index) => (
+            {allblogs.map((blog, index) => (
               <div
                 key={index}
                 className={`${index === 0 && `col-span-1 md:col-span-2`}`}
@@ -152,7 +165,28 @@ function Blog() {
                   title={blog.title}
                   content={blog.content}
                   slug={blog.slug}
-                  author={blogs.author}
+                  author={blog.author}
+                  createdAt={new Date(blog.createdAt).toDateString()}
+                />
+              </div>
+            ))}
+          </main>
+        </div>
+
+        <div>
+          <h2 className="text-3xl font-semibold">Your Blogs 📝</h2>
+          <p className="text-gray-600">Read some premium quality blogs</p>
+          <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+            {userBlogs.allBlogs.map((blog, index) => (
+              <div
+                key={index}
+                className={`${index === 0 && `col-span-1 md:col-span-2`}`}
+              >
+                <IndividualBlogComponent
+                  title={blog.title}
+                  content={blog.content}
+                  slug={blog.slug}
+                  author={userBlogs.author}
                   createdAt={new Date(blog.createdAt).toDateString()}
                 />
               </div>

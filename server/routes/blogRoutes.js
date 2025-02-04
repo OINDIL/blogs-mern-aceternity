@@ -24,6 +24,12 @@ router.post('/create', verifyToken, async (req, res) => {
             return res.status(401).json({ message: 'No token' });
         }
 
+        const sameTitle = await Blog.findOne({ title })
+
+        if (sameTitle) {
+            return res.json({ message: "Blog title already exists" })
+        }
+
         jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
             if (err) return res.status(403).json({ message: 'Token is invalid or expired' });
         });
@@ -86,16 +92,38 @@ router.get('/all-user-blogs', verifyToken, async (req, res) => {
     }
 });
 
-router.get('/all-blogs', async (req, res) => {
-    const allBlogs = await Blog.find();
+router.get('/all-blogs', verifyToken, async (req, res) => {
+    try {
+        const allBlogs = await Blog.find();
 
-    if (!allBlogs) {
-        return res.status(404).json([{ author: "No author found", title: "Not found", content: "Not found" }]);
+        if (!allBlogs) {
+            return res.status(404).json([{ author: "No author found", title: "Not found", content: "Not found" }]);
+        }
+
+        const allBlogsUser = await allBlogs.map(async (blog) => {
+            const blogAuthor = await blog.populate('user')
+            return {
+                author: blogAuthor?.user?.name,
+                title: blog.title,
+                content: blog.content,
+                createdAt: blog.createdAt,
+                slug: blog.slug,
+                _id: blog._id
+            }
+        })
+        const allBlogsArray = await Promise.all(allBlogsUser)
+
+        if (!allBlogsArray) {
+            return res.status(404).json([{ author: "No author found", title: "Not found", content: "Not found" }]);
+        }
+
+        res.json(allBlogsArray);
+    } catch (error) {
+        res.json({ message: "can't fetch all blogs" })
     }
-    res.json(allBlogs);
 })
 
-router.get('/featured-blogs', async (req, res) => {
+router.get('/featured-blogs', verifyToken, async (req, res) => {
     res.json([{ author: "No author found", title: "Not found", content: "Not found" }])
 })
 
